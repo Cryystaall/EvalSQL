@@ -1,5 +1,4 @@
 -- Vue 1
-
 CREATE VIEW ALL_PLAYERS AS
 SELECT TOP 100 PERCENT
     p.pseudo AS nom_joueur,
@@ -18,10 +17,9 @@ ORDER BY
     premiere_participation,
     derniere_action,
     nom_joueur;
-
+GO
 
 -- Vue 2
-
 CREATE VIEW ALL_PLAYERS_ELAPSED_GAME AS
 SELECT TOP 100 PERCENT
     p.pseudo AS nom_joueur,
@@ -40,12 +38,11 @@ GROUP BY
     p.id_player, p.pseudo, pt.id_party, pt.title_party
 ORDER BY
     p.pseudo, pt.title_party;
-
+GO
 
 -- Vue 3
-
 CREATE VIEW ALL_PLAYERS_ELAPSED_TOUR AS
-SELECT 
+SELECT
     p.pseudo AS nom_joueur,
     pa.title_party AS nom_partie,
     COUNT(pp.id_player) AS nombre_participants,
@@ -53,15 +50,13 @@ SELECT
     MAX(pp.end_time) AS fin_partie_joueur,
     DATEDIFF(SECOND, MIN(pp.start_time), MAX(pp.end_time)) AS temps_total_sec
 FROM players_play pp
-JOIN players p ON pp.id_player = p.id_player
-JOIN turns t ON pp.id_turn = t.id_turn
-JOIN parties pa ON t.id_party = pa.id_party
+         JOIN players p ON pp.id_player = p.id_player
+         JOIN turns t ON pp.id_turn = t.id_turn
+         JOIN parties pa ON t.id_party = pa.id_party
 GROUP BY p.pseudo, pa.title_party;
-
-
+GO
 
 -- Vue 4
-
 CREATE VIEW ALL_PLAYERS_STATS AS
 SELECT
     p.pseudo AS player_name,
@@ -85,3 +80,4 @@ FROM
     turns tp ON pp.id_turn = tp.id_turn AND tp.id_party = pr.id_party
 GROUP BY
     p.pseudo, r.description_role, pr.title_party, pip.is_alive, pr.id_party;
+GO
