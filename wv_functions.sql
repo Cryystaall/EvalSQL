@@ -42,29 +42,24 @@ CREATE FUNCTION random_position(@nb_rows INT, @nb_cols INT, @party_id INT)
 CREATE FUNCTION random_role(@party_id INT)
     RETURNS INT
 AS
-BEGIN
+
     DECLARE @wolf_id INT = 1;
     DECLARE @villager_id INT = 2;
     DECLARE @total_players INT;
     DECLARE @wolf_count INT;
     DECLARE @next_role INT;
-
     SELECT @total_players = COUNT(*)
     FROM players_in_parties
     WHERE id_party = @party_id;
-
     SELECT @wolf_count = COUNT(*)
     FROM players_in_parties
     WHERE id_party = @party_id AND id_role = @wolf_id;
-
     IF (@wolf_count < CEILING((@total_players + 1) / 3.0))
         SET @next_role = @wolf_id;
     ELSE
         SET @next_role = @villager_id;
-
     RETURN @next_role;
 END;
-
 CREATE FUNCTION get_the_winner(@party_id INT)
     RETURNS TABLE
         AS
