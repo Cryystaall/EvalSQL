@@ -1,3 +1,5 @@
+-- Vue 1
+
 CREATE VIEW ALL_PLAYERS AS
 SELECT TOP 100 PERCENT
     p.pseudo AS nom_joueur,
@@ -16,6 +18,9 @@ ORDER BY
     premiere_participation,
     derniere_action,
     nom_joueur;
+
+
+-- Vue 2
 
 CREATE VIEW ALL_PLAYERS_ELAPSED_GAME AS
 SELECT TOP 100 PERCENT
@@ -37,7 +42,7 @@ ORDER BY
     p.pseudo, pt.title_party;
 
 
-
+-- Vue 3
 
 CREATE VIEW ALL_PLAYERS_ELAPSED_TOUR AS
 SELECT 
@@ -52,3 +57,31 @@ JOIN players p ON pp.id_player = p.id_player
 JOIN turns t ON pp.id_turn = t.id_turn
 JOIN parties pa ON t.id_party = pa.id_party
 GROUP BY p.pseudo, pa.title_party;
+
+
+
+-- Vue 4
+
+CREATE VIEW ALL_PLAYERS_STATS AS
+SELECT
+    p.pseudo AS player_name,
+    r.description_role AS role,
+    pr.title_party AS party_name,
+    COUNT(tp.id_turn) AS num_turns_played,
+    (SELECT COUNT(*) FROM turns t WHERE t.id_party = pr.id_party) AS total_turns_in_party,
+    IIF(pip.is_alive = 'true', 'Vainqueur', 'Perdant') AS winner,
+    AVG(DATEDIFF(SECOND, pp.start_time, pp.end_time)) AS avg_decision_time
+FROM
+    players p
+        JOIN
+    players_in_parties pip ON p.id_player = pip.id_player
+        JOIN
+    parties pr ON pip.id_party = pr.id_party
+        JOIN
+    roles r ON pip.id_role = r.id_role
+        JOIN
+    players_play pp ON p.id_player = pp.id_player
+        JOIN
+    turns tp ON pp.id_turn = tp.id_turn AND tp.id_party = pr.id_party
+GROUP BY
+    p.pseudo, r.description_role, pr.title_party, pip.is_alive, pr.id_party;
