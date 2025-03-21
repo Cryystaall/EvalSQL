@@ -1,8 +1,16 @@
+DROP TABLE IF EXISTS parties;
+DROP TABLE IF EXISTS players_play;
+DROP TABLE IF EXISTS players_in_parties;
+DROP TABLE IF EXISTS turns;
+DROP TABLE IF EXISTS players;
+DROP TABLE IF EXISTS roles;
+
 CREATE TABLE parties (
     id_party INT IDENTITY PRIMARY KEY,
     title_party VARCHAR(255) NOT NULL,
     nb_tours_total INT NOT NULL, -- Nombre total de tours prévus
     winner_id INT NULL, -- Vainqueur de la partie
+    max_turns INT NOT NULL, -- Nombre maximum de tours
     FOREIGN KEY (winner_id) REFERENCES players(id_player)
 );
 
