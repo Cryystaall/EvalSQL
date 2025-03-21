@@ -5,12 +5,17 @@ DROP TABLE IF EXISTS turns;
 DROP TABLE IF EXISTS players;
 DROP TABLE IF EXISTS roles;
 
+CREATE TABLE players (
+     id_player INT IDENTITY PRIMARY KEY,
+     pseudo VARCHAR(100) UNIQUE NOT NULL,
+     date_inscription DATETIME DEFAULT GETDATE()
+);
 CREATE TABLE parties (
     id_party INT IDENTITY PRIMARY KEY,
     title_party VARCHAR(255) NOT NULL,
-    nb_tours_total INT NOT NULL, -- Nombre total de tours prévus
-    winner_id INT NULL, -- Vainqueur de la partie
-    max_turns INT NOT NULL, -- Nombre maximum de tours
+    nb_tours_total INT NOT NULL,
+    winner_id INT NULL,
+    max_turns INT NOT NULL,
     FOREIGN KEY (winner_id) REFERENCES players(id_player)
 );
 
@@ -19,11 +24,6 @@ CREATE TABLE roles (
     description_role VARCHAR(50) NOT NULL CHECK (description_role IN ('VILLAGER', 'WOLF'))
 );
 
-CREATE TABLE players (
-    id_player INT IDENTITY PRIMARY KEY,
-    pseudo VARCHAR(100) UNIQUE NOT NULL,
-    date_inscription DATETIME DEFAULT GETDATE() -- Permet de suivre la première participation
-);
 
 CREATE TABLE players_in_parties (
     id_party INT NOT NULL,
