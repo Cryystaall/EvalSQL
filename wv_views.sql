@@ -1,4 +1,4 @@
-<<<<<<< Updated upstream
+
 CREATE VIEW ALL_PLAYERS AS
 SELECT TOP 100 PERCENT
     p.pseudo AS nom_joueur,
@@ -39,7 +39,7 @@ ORDER BY
 
 
 
-=======
+
 
 SELECT 
     p.pseudo AS nom_joueur,
@@ -53,4 +53,3 @@ JOIN players p ON pp.id_player = p.id_player
 JOIN turns t ON pp.id_turn = t.id_turn
 JOIN parties pa ON t.id_party = pa.id_party
 GROUP BY p.pseudo, pa.title_party;
->>>>>>> Stashed changes
