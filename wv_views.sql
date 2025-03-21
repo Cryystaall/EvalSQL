@@ -1,4 +1,3 @@
-
 CREATE VIEW ALL_PLAYERS AS
 SELECT TOP 100 PERCENT
     p.pseudo AS nom_joueur,
@@ -40,7 +39,7 @@ ORDER BY
 
 
 
-
+CREATE VIEW ALL_PLAYERS_ELAPSED_TOUR AS
 SELECT 
     p.pseudo AS nom_joueur,
     pa.title_party AS nom_partie,
