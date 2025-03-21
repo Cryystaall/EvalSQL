@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 CREATE VIEW ALL_PLAYERS AS
 SELECT TOP 100 PERCENT
     p.pseudo AS nom_joueur,
@@ -38,3 +39,18 @@ ORDER BY
 
 
 
+=======
+
+SELECT 
+    p.pseudo AS nom_joueur,
+    pa.title_party AS nom_partie,
+    COUNT(pp.id_player) AS nombre_participants,
+    MIN(pp.start_time) AS debut_partie_joueur,
+    MAX(pp.end_time) AS fin_partie_joueur,
+    DATEDIFF(SECOND, MIN(pp.start_time), MAX(pp.end_time)) AS temps_total_sec
+FROM players_play pp
+JOIN players p ON pp.id_player = p.id_player
+JOIN turns t ON pp.id_turn = t.id_turn
+JOIN parties pa ON t.id_party = pa.id_party
+GROUP BY p.pseudo, pa.title_party;
+>>>>>>> Stashed changes
