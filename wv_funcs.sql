@@ -5,15 +5,15 @@ CREATE FUNCTION random_position(@nb_rows INT, @nb_cols INT, @party_id INT)
         (
         WITH used_positions AS (
             SELECT DISTINCT
-                origin_position_row AS row_pos,
-                origin_position_col AS col_pos
+                origin_row AS row_pos,
+                origin_col AS col_pos
             FROM players_play pp
                      JOIN turns t ON pp.id_turn = t.id_turn
             WHERE t.id_party = @party_id
             UNION
             SELECT DISTINCT
-                target_position_row,
-                target_position_col
+                target_row,
+                target_col
             FROM players_play pp
                      JOIN turns t ON pp.id_turn = t.id_turn
             WHERE t.id_party = @party_id
@@ -91,7 +91,7 @@ CREATE FUNCTION get_the_winner(@party_id INT)
                      JOIN players_play pp ON p.id_player = pp.id_player
                      JOIN turns t ON pp.id_turn = t.id_turn AND t.id_party = pt.id_party
             WHERE pip.id_party = @party_id
-              AND pip.is_alive = 'true'
+              AND pip.is_alive = 1
             GROUP BY p.id_player, p.pseudo, r.id_role, r.description_role, pt.title_party
         )
         SELECT * FROM player_stats
