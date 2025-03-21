@@ -8,7 +8,6 @@ BEGIN
 
     WHILE @i <= @NB_PLAYERS
         BEGIN
-            -- Crée un tour pour chaque joueur (en respectant max_turns)
             INSERT INTO turns (id_party, start_time, end_time)
             VALUES (@PARTY_ID, GETDATE(), GETDATE());
 
@@ -23,10 +22,8 @@ CREATE PROCEDURE COMPLETE_TOUR
     @PARTY_ID INT
 AS
 BEGIN
-    DECLARE @done INT = 0;
     DECLARE @player_id INT;
 
-    -- Déclaration du curseur
     DECLARE player_cursor CURSOR FOR
         SELECT id_player
         FROM players_in_parties
@@ -34,25 +31,17 @@ BEGIN
 
     OPEN player_cursor;
 
-    -- Récupération du premier enregistrement
     FETCH NEXT FROM player_cursor INTO @player_id;
 
-    -- Boucle sur tous les joueurs
     WHILE @@FETCH_STATUS = 0
         BEGIN
-            -- Applique les déplacements du joueur pour ce tour
             UPDATE players_play
             SET action = 'MOVE'
             WHERE id_turn = @TOUR_ID AND id_player = @player_id;
 
-            -- Résoudre les conflits s'il y en a
-            -- Exemple : vérification et résolution des conflits (ajoutez votre logique ici)
-
-            -- Récupération de l'enregistrement suivant
             FETCH NEXT FROM player_cursor INTO @player_id;
         END;
 
-    -- Fermeture et libération du curseur
     CLOSE player_cursor;
     DEALLOCATE player_cursor;
 END;
@@ -63,6 +52,7 @@ CREATE PROCEDURE USERNAME_TO_LOWER
 AS
 BEGIN
     UPDATE players
-    SET pseudo = LOWER(pseudo);
+    SET pseudo = LOWER(pseudo)
+    WHERE pseudo <> LOWER(pseudo);
 END;
 GO
