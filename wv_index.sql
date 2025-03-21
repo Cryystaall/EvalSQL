@@ -1,3 +1,9 @@
+DROP TABLE IF EXISTS players_play;
+DROP TABLE IF EXISTS turns;
+DROP TABLE IF EXISTS players_in_parties;
+DROP TABLE IF EXISTS players;
+DROP TABLE IF EXISTS roles;
+DROP TABLE IF EXISTS parties;
 create table parties (
                          id_party int,
                          title_party varchar(20)
